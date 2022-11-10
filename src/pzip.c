@@ -44,7 +44,7 @@ void create_threads(int n_threads, char *input_chars, int input_chars_size,
 	pthread_t threads[n_threads];
 	struct thread_args *thread_args[n_threads];
 	// initalizing the pthread_barrier
-	pthread_barrier_init(&barrier, NULL, n_threads + 1);
+	pthread_barrier_init(&barrier, NULL, n_threads);
 	// initalizing global lengths array
 	lengths = malloc_lengths(n_threads);
 
@@ -53,8 +53,6 @@ void create_threads(int n_threads, char *input_chars, int input_chars_size,
 		thread_args[i] = create_args(n_threads, input_chars, input_chars_size, zipped_chars, zipped_chars_count, char_frequency, i);
 		pthread_create(&threads[i], NULL, arg_unpacking, (void *)thread_args[i]);
 	}
-
-	pthread_barrier_wait(&barrier);
 
 	// joining the threads
 	for (int i = 0; i < n_threads; i++) {
